@@ -5,12 +5,18 @@
 ### unstated constraints
 
 - bijection, which means no duplicates
-- finite number for every finite word, which rules out certain mappings
+- finite number for every finite pair or triple, which rules out certain mappings
 
 ### potential exercises
 
-- prove that this generation can never produce two  words with the same rendering but different composition.
+- prove that this generation can never produce two words with the same rendering but different composition.
+  - discover that `ww*` is not helpful for generating a unique mapping
 - prove that a nested for loop cannot work
+- parse a dyck word/validate a dick word using the construction
+- every non-empty dyck word has an intial word of the form `X...Y` followed by empty or another dyck word this should facilitate parsing.
+- mapping pairs to positives, the reverse mapping
+- dyck languages with depth limits
+
 
 ### bibliography
 
