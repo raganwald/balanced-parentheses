@@ -1,6 +1,6 @@
 import { NonnegativeTriplet } from "./base";
 import { mapPositiveToNonnegativePair } from "./number.maps";
-import { mapPositiveToNonnegativeTriplet } from "./typed";
+import { mapPositiveToNonnegativeTriplet } from "./number.maps";
 
 test("dyck words: mapPositiveToNonnegativePair", () => {
   const pathIn2d: number[][] = [
