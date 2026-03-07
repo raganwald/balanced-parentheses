@@ -26,7 +26,8 @@ import { mapPositiveToNonnegativePair } from "./number.maps";
  * |  3 | 10 | 11 | 12 | 13 | 20
  * |  … | 25 | 24 | 23 | 22 | 21
  * 
- * The row and column indices now map to the "parent" dyck words. In the case of balanced parentheses:
+ * The row and column indices now map to the "parent" dyck words in order,
+ * `XrowYcolumn`. In the case of balanced parentheses:
  * 
  *          |        | ()       | (())       |
  *          |--------|----------|----------- |
@@ -51,9 +52,9 @@ export function mapNonnegativeToDyckWord(X: string, Y: string, nonnegative: numb
   if (nonnegative === 0) return '';
 
   // recursive case
-  const [x, y] = mapPositiveToNonnegativePair(nonnegative);
+  const [rowIndex, y] = mapPositiveToNonnegativePair(nonnegative);
 
-  return `${X}${mapNonnegativeToDyckWord(X, Y, x)}${Y}${mapNonnegativeToDyckWord(X, Y, y)}`;
+  return `${X}${mapNonnegativeToDyckWord(X, Y, rowIndex)}${Y}${mapNonnegativeToDyckWord(X, Y, y)}`;
 }
 
 export function * dyckWords(X: string, Y: string) {

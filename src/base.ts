@@ -2,6 +2,10 @@ export const Zero = 0;
 export const One = 1;
 
 export type NonnegativePair = [x: number, y: number];
+
+export const isNonnegativePair = (pair: NonnegativePair): pair is NonnegativePair =>
+  pair.every( (n) => n >= 0 && n === Math.floor(n) );
+
 export type NonnegativeTriplet = [...NonnegativePair, z: number];
 
 /**

@@ -1,4 +1,4 @@
-import { isAlphabet, take } from "./base";
+import { isAlphabet, isNonnegativePair, take } from "./base";
 
 const elementsOf = <T>(array: T[]) =>
   function * () { yield * array; }()
@@ -25,4 +25,21 @@ test("isAlphabet", () => {
   // otherwise, fine?
   expect(isAlphabet(["(", ")"])).toBe(true);
   expect(isAlphabet(["(", ")", "[", "]"])).toBe(true);
+});
+
+test("isNonnegativePair", () => {
+  //@ts-expect-error "empty pair should be caught by the type system"
+  isNonnegativePair([])
+
+  //@ts-expect-error "not both numbers should be caught by the type system"
+  isNonnegativePair(['a', 3])
+  //@ts-expect-error "not both numbers should be caught by the type system"
+  isNonnegativePair([3, 'a'])
+
+  expect(isNonnegativePair([3, -3])).toBe(false);
+  expect(isNonnegativePair([-3, 0])).toBe(false);
+  
+  expect(isNonnegativePair([3, 0])).toBe(true);
+  expect(isNonnegativePair([0, 0])).toBe(true);
+  expect(isNonnegativePair([0, 3])).toBe(true);
 });

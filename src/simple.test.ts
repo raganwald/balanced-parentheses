@@ -1,7 +1,7 @@
 import { take } from "./base";
 import { dyckWords } from "./simple";
 
-test("dyck words: simple words", () => {
+test("simple words", () => {
   expect([...take(25, dyckWords('(', ')'))]).toEqual([
     "", "()", "(())", "(())()", "()()",
     "()(())", "(())(())", "((()))(())", "((()))()", "((()))",

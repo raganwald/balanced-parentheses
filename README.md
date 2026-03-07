@@ -16,6 +16,7 @@
 - every non-empty dyck word has an intial word of the form `X...Y` followed by empty or another dyck word this should facilitate parsing.
 - mapping pairs to positives, the reverse mapping
 - dyck languages with depth limits
+- constructive proof that the correspondance is a bijection
 
 
 ### bibliography

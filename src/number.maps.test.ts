@@ -1,8 +1,14 @@
 import { NonnegativeTriplet } from "./base";
-import { mapPositiveToNonnegativePair } from "./number.maps";
+import { mapNonegativePairToPositive, mapPositiveToNonnegativePair } from "./number.maps";
 import { mapPositiveToNonnegativeTriplet } from "./number.maps";
 
-test("dyck words: mapPositiveToNonnegativePair", () => {
+/*
+ * 
+ * We uniformly represent the mapping as an array of arrays,
+ * accesed as [row][column]
+ *
+ */
+test("mapPositiveToNonnegativePair", () => {
   const pathIn2d: number[][] = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
@@ -12,9 +18,9 @@ test("dyck words: mapPositiveToNonnegativePair", () => {
   ];
 
   for (let i = 1; i <= 25; i++) {
-    const [x, y] = mapPositiveToNonnegativePair(i);
+    const [row, column] = mapPositiveToNonnegativePair(i);
 
-    (pathIn2d[x] || [])[y] = i;
+    (pathIn2d[row] || [])[column] = i;
   }
 
   expect(pathIn2d).toEqual([
@@ -24,9 +30,47 @@ test("dyck words: mapPositiveToNonnegativePair", () => {
     [10, 11, 12, 13, 20],
     [25, 24, 23, 22, 21]
   ]);
+
+  expect(mapPositiveToNonnegativePair(1)).toEqual([0, 0]); // [row, column]
+  expect(mapPositiveToNonnegativePair(2)).toEqual([1, 0]);
+  expect(mapPositiveToNonnegativePair(3)).toEqual([1, 1]);
+  expect(mapPositiveToNonnegativePair(4)).toEqual([0, 1]);
+
+  expect(mapPositiveToNonnegativePair(5)).toEqual([0, 2]);
+  expect(mapPositiveToNonnegativePair(6)).toEqual([1, 2]);
+  expect(mapPositiveToNonnegativePair(7)).toEqual([2, 2]);
+  expect(mapPositiveToNonnegativePair(8)).toEqual([2, 1]);
+  expect(mapPositiveToNonnegativePair(9)).toEqual([2, 0]);
 });
 
-test("dyck words: mapPositiveToNonnegativeTriplet", () => {
+test("mapNonegativePairToPositive", () => {
+  expect(mapNonegativePairToPositive([0, 0])).toEqual(1); // [row, column]
+  expect(mapNonegativePairToPositive([1, 0])).toEqual(2);
+  expect(mapNonegativePairToPositive([1, 1])).toEqual(3);
+  expect(mapNonegativePairToPositive([0, 1])).toEqual(4);
+
+  expect(mapNonegativePairToPositive([0, 2])).toEqual(5);
+  expect(mapNonegativePairToPositive([1, 2])).toEqual(6);
+  expect(mapNonegativePairToPositive([2, 2])).toEqual(7);
+  expect(mapNonegativePairToPositive([2, 1])).toEqual(8);
+  expect(mapNonegativePairToPositive([2, 0])).toEqual(9);
+});
+
+test("round trip mapPositiveToNonnegativePair -> mapNonegativePairToPositive", () => {
+  let i = 0;
+
+  while (++i < 100) {
+    const index = i;
+    const pair = mapPositiveToNonnegativePair(index);
+    const indexPrime = mapNonegativePairToPositive(pair);
+
+    // console.log(`index: ${index}, pair: [${pair[0]}, ${pair[1]}], indexPrime: ${indexPrime}`);
+
+    expect(indexPrime).toBe(index);
+  }
+});
+
+test("mapPositiveToNonnegativeTriplet", () => {
   const pathIn3d: NonnegativeTriplet[][] = [
     [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
     [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
@@ -34,9 +78,9 @@ test("dyck words: mapPositiveToNonnegativeTriplet", () => {
   ];
 
   for (let i = 1; i <= 27; i++) {
-    const [x, y, z] = mapPositiveToNonnegativeTriplet(i, 3);
+    const [row, column, layer] = mapPositiveToNonnegativeTriplet(i, 3);
 
-    ((pathIn3d[x] || [])[y] || [])[z] = i;
+    ((pathIn3d[row] || [])[column] || [])[layer] = i; // Too many responsibilities
   }
 
   expect(pathIn3d).toEqual([
@@ -52,7 +96,7 @@ test("dyck words: mapPositiveToNonnegativeTriplet", () => {
  * very much like our simple map above, albeit with
  * a slightly different data structure.
  */
-test("dyck words: degenerate path in 3d", () => {
+test("degenerate path in 3d", () => {
   const pathIn3d: number[][][] = [
     [[0], [0], [0]],
     [[0], [0], [0]],
@@ -60,9 +104,9 @@ test("dyck words: degenerate path in 3d", () => {
   ];
 
   for (let i = 1; i <= 9; i++) {
-    const [x, y, z] = mapPositiveToNonnegativeTriplet(i, 1);
+    const [row, column, layer] = mapPositiveToNonnegativeTriplet(i, 1);
 
-    ((pathIn3d[x] || [])[y] || [])[z] = i;
+    ((pathIn3d[row] || [])[column] || [])[layer] = i;
   }
 
   expect(pathIn3d).toEqual([
@@ -71,4 +115,3 @@ test("dyck words: degenerate path in 3d", () => {
     [[9], [8], [7]]
   ]);
 });
-

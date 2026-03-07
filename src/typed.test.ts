@@ -5,7 +5,7 @@ import { typedDyckWords } from "./typed";
  * Tests the degenerate case, when there is just one pair of symbols despite
  * the architecture designing for one or more
  */
-test("dyck words: typed words, degenerate case", () => {
+test("typed words, degenerate case", () => {
   expect([...take(25, typedDyckWords('(', ')'))]).toEqual([
     "", "()", "(())", "(())()", "()()",
     "()(())", "(())(())", "((()))(())", "((()))()", "((()))",
@@ -26,7 +26,7 @@ test("dyck words: typed words, degenerate case", () => {
 /**
  * tests the normal case, when there is more than one pair of symbols
  */
-test("dyck words: typed words, normal case", () => {
+test("typed words, normal case", () => {
   expect([...take(19, typedDyckWords('(', ')', '[', ']', '{', '}'))]).toEqual([
     "", // the degenerate case
     "()", "[]", "{}",
