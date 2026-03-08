@@ -1,4 +1,4 @@
-import { isNonnegativePair, NonnegativePair, NonnegativeTriplet, One, Zero } from "./base";
+import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTriplet, One, Zero } from "./base";
 
 /**
  *
@@ -187,7 +187,6 @@ function isDownAndThenLeft(rowOrColumnIndex: number) {
  *          and where numberOfTypes >= 1.
  *
  */
-
 export function mapPositiveToNonnegativeTriplet(positive: number, numberOfLayers: number): NonnegativeTriplet {
 
   // erroneous inputs
@@ -203,4 +202,14 @@ export function mapPositiveToNonnegativeTriplet(positive: number, numberOfLayers
   const [row, column]: NonnegativePair = mapPositiveToNonnegativePair(positive2d);
 
   return [row, column, layer];
+}
+
+export function mapNonnegativeTripletToPositive([row, column, layer]: NonnegativeTriplet, numberOfLayers: number): number {
+  if (!isNonnegativeTriplet([row, column, layer], numberOfLayers)) throw new RangeError();
+  
+  const positive2d = mapNonegativePairToPositive([row, column]);
+
+  // layer is zero-based, positive2d is 1-based, need to do a shake of the hips to
+  // sort out the proper modulo artithmetic
+  return ((positive2d - 1) * numberOfLayers) + 1 + layer;
 }

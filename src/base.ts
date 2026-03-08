@@ -8,6 +8,13 @@ export const isNonnegativePair = (pair: NonnegativePair): pair is NonnegativePai
 
 export type NonnegativeTriplet = [...NonnegativePair, z: number];
 
+export const isNonnegativeTriplet = (triplet: NonnegativeTriplet, numberOfLayers: number): triplet is NonnegativeTriplet => {
+  const [row, column, layer] = triplet;
+
+  return isNonnegativePair([row, column]) &&
+    layer >= 0 && layer === Math.floor(layer) && layer < numberOfLayers;
+}
+
 /**
  * 
  * A generator decorator that limits another generator to a maximum number of elements.

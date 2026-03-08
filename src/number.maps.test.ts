@@ -1,6 +1,6 @@
 import { NonnegativeTriplet } from "./base";
 import { mapNonegativePairToPositive, mapPositiveToNonnegativePair } from "./number.maps";
-import { mapPositiveToNonnegativeTriplet } from "./number.maps";
+import { mapPositiveToNonnegativeTriplet, mapNonnegativeTripletToPositive } from "./number.maps";
 
 /*
  * 
@@ -57,61 +57,62 @@ test("mapNonegativePairToPositive", () => {
 });
 
 test("round trip mapPositiveToNonnegativePair -> mapNonegativePairToPositive", () => {
-  let i = 0;
+  let notNegative = 0;
 
-  while (++i < 100) {
-    const index = i;
-    const pair = mapPositiveToNonnegativePair(index);
-    const indexPrime = mapNonegativePairToPositive(pair);
+  while (++notNegative < 100) {
+    const pair = mapPositiveToNonnegativePair(notNegative);
+    const notNegativePrime = mapNonegativePairToPositive(pair);
 
-    // console.log(`index: ${index}, pair: [${pair[0]}, ${pair[1]}], indexPrime: ${indexPrime}`);
-
-    expect(indexPrime).toBe(index);
+    expect(notNegativePrime).toBe(notNegative);
   }
 });
 
 test("mapPositiveToNonnegativeTriplet", () => {
-  const pathIn3d: NonnegativeTriplet[][] = [
-    [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-    [[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-    [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-  ];
+  // normal case
+  expect(mapPositiveToNonnegativeTriplet(1, 3)).toEqual([0, 0, 0]);
+  expect(mapPositiveToNonnegativeTriplet(2, 3)).toEqual([0, 0, 1]);
+  expect(mapPositiveToNonnegativeTriplet(3, 3)).toEqual([0, 0, 2]);
 
-  for (let i = 1; i <= 27; i++) {
-    const [row, column, layer] = mapPositiveToNonnegativeTriplet(i, 3);
+  expect(mapPositiveToNonnegativeTriplet(4, 3)).toEqual([1, 0, 0]);
+  expect(mapPositiveToNonnegativeTriplet(5, 3)).toEqual([1, 0, 1]);
+  expect(mapPositiveToNonnegativeTriplet(6, 3)).toEqual([1, 0, 2]);
 
-    ((pathIn3d[row] || [])[column] || [])[layer] = i; // Too many responsibilities
-  }
+  expect(mapPositiveToNonnegativeTriplet(7, 3)).toEqual([1, 1, 0]);
+  expect(mapPositiveToNonnegativeTriplet(8, 3)).toEqual([1, 1, 1]);
+  expect(mapPositiveToNonnegativeTriplet(9, 3)).toEqual([1, 1, 2]);
 
-  expect(pathIn3d).toEqual([
-    [[1, 2, 3], [10, 11, 12], [13, 14, 15]],
-    [[4, 5, 6], [7, 8, 9], [16, 17, 18]],
-    [[25, 26, 27], [22, 23, 24], [19, 20, 21]]
-  ]);
+  expect(mapPositiveToNonnegativeTriplet(10, 3)).toEqual([0, 1, 0]);
+  expect(mapPositiveToNonnegativeTriplet(11, 3)).toEqual([0, 1, 1]);
+  expect(mapPositiveToNonnegativeTriplet(12, 3)).toEqual([0, 1, 2]);
+
+  // degenerate case
+  expect(mapPositiveToNonnegativeTriplet(1, 1)).toEqual([0, 0, 0]);
+  expect(mapPositiveToNonnegativeTriplet(2, 1)).toEqual([1, 0, 0]);
+  expect(mapPositiveToNonnegativeTriplet(3, 1)).toEqual([1, 1, 0]);
+  expect(mapPositiveToNonnegativeTriplet(4, 1)).toEqual([0, 1, 0]);
 });
-/**
- *
- * The generate case for the 3d path is where there
- * is only one level. If all is correct, it will behave
- * very much like our simple map above, albeit with
- * a slightly different data structure.
- */
-test("degenerate path in 3d", () => {
-  const pathIn3d: number[][][] = [
-    [[0], [0], [0]],
-    [[0], [0], [0]],
-    [[0], [0], [0]]
-  ];
 
-  for (let i = 1; i <= 9; i++) {
-    const [row, column, layer] = mapPositiveToNonnegativeTriplet(i, 1);
+test("mapNonnegativeTripletToPositive", () => {
+  // normal case
+  expect(mapNonnegativeTripletToPositive([0, 0, 0], 3)).toEqual(1);
+  expect(mapNonnegativeTripletToPositive([0, 0, 1], 3)).toEqual(2);
+  expect(mapNonnegativeTripletToPositive([0, 0, 2], 3)).toEqual(3);
 
-    ((pathIn3d[row] || [])[column] || [])[layer] = i;
-  }
+  expect(mapNonnegativeTripletToPositive([1, 0, 0], 3)).toEqual(4);
+  expect(mapNonnegativeTripletToPositive([1, 0, 1], 3)).toEqual(5);
+  expect(mapNonnegativeTripletToPositive([1, 0, 2], 3)).toEqual(6);
 
-  expect(pathIn3d).toEqual([
-    [[1], [4], [5]],
-    [[2], [3], [6]],
-    [[9], [8], [7]]
-  ]);
+  expect(mapNonnegativeTripletToPositive([1, 1, 0], 3)).toEqual(7);
+  expect(mapNonnegativeTripletToPositive([1, 1, 1], 3)).toEqual(8);
+  expect(mapNonnegativeTripletToPositive([1, 1, 2], 3)).toEqual(9);
+
+  expect(mapNonnegativeTripletToPositive([0, 1, 0], 3)).toEqual(10);
+  expect(mapNonnegativeTripletToPositive([0, 1, 1], 3)).toEqual(11);
+  expect(mapNonnegativeTripletToPositive([0, 1, 2], 3)).toEqual(12);
+
+  // degenerate case
+  expect(mapNonnegativeTripletToPositive([0, 0, 0], 1)).toEqual(1);
+  expect(mapNonnegativeTripletToPositive([1, 0, 0], 1)).toEqual(2);
+  expect(mapNonnegativeTripletToPositive([1, 1, 0], 1)).toEqual(3);
+  expect(mapNonnegativeTripletToPositive([0, 1, 0], 1)).toEqual(4);
 });
