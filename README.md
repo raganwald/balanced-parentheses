@@ -14,9 +14,12 @@
 - prove that a nested for loop cannot work
 - parse a dyck word/validate a dick word using the construction
 - every non-empty dyck word has an intial word of the form `X...Y` followed by empty or another dyck word this should facilitate parsing.
-- mapping pairs to positives, the reverse mapping
 - dyck languages with depth limits
-- constructive proof that the correspondance is a bijection
+
+# mapping dyck words to nonnegatives
+
+"Here is a string, give me the first complete Dyck Word and the remander of the string"
+
 
 
 ### bibliography

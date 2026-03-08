@@ -1,11 +1,10 @@
 /**
  *
- * Constructive demonstration that the simple (one type of parentheses)
- * balanced parentheses language can be placed into a 1:1 correspondence
+ * Constructive demonstration that an untyped (one pair of symbols)
+ * dyck language can be placed into a 1:1 correspondence
  * with the integers, and then generated in sequence.
  *
  */
-
 import { Zero } from "./base";
 import { mapPositiveToNonnegativePair } from "./number.maps";
 
@@ -40,27 +39,28 @@ import { mapPositiveToNonnegativePair } from "./number.maps";
  * @param nonnegative a positive or counting number 
  * @returns a string
  */
-export function mapNonnegativeToDyckWord(X: string, Y: string, nonnegative: number): string {
+export function nonnegativeToUntypedDyckWordMapper(X: string, Y: string) {
+  return function mapper (nonnegative: number): string {
+    // erroneous inputs
+    if (nonnegative < Zero) throw new RangeError();
+    if (nonnegative != Math.floor(nonnegative)) throw new RangeError();
 
-  // See mapPositiveToNonnegativePair for general comments about the agorithm for determening the x and y coördinates
+    // degenerate case
+    if (nonnegative === 0) return '';
 
-  // erroneous inputs
-  if (nonnegative < Zero) throw new RangeError();
-  if (nonnegative != Math.floor(nonnegative)) throw new RangeError();
+    // recursive case
+    const [row, column] = mapPositiveToNonnegativePair(nonnegative);
 
-  // degenerate case
-  if (nonnegative === 0) return '';
-
-  // recursive case
-  const [rowIndex, y] = mapPositiveToNonnegativePair(nonnegative);
-
-  return `${X}${mapNonnegativeToDyckWord(X, Y, rowIndex)}${Y}${mapNonnegativeToDyckWord(X, Y, y)}`;
+    return `${X}${mapper(row)}${Y}${mapper(column)}`;
+  };
 }
 
-export function * dyckWords(X: string, Y: string) {
+export function * untypedDyckWords(X: string, Y: string) {
+  const mapper = nonnegativeToUntypedDyckWordMapper(X, Y);
+
   let n = 0;
 
   while (true) {
-    yield mapNonnegativeToDyckWord(X, Y, n++);
+    yield mapper(n++);
   }
 }
