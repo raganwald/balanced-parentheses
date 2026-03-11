@@ -1,5 +1,5 @@
 import { take } from "./base";
-import { closingSymbolsOf, nonnegativeToTypedDyckWordMapper, typedDyckWordRecognizer, typedDyckWords, typedDyckWordToNonnegativeMapper } from "./typed-dyck";
+import { nonnegativeToTypedDyckWordMapper, typedDyckWordRecognizer, typedDyckWords, typedDyckWordToNonnegativeMapper } from "./typed-dyck";
 
 test("nonnegativeToTypedDyckWordMapper", () => {
   const mapper = nonnegativeToTypedDyckWordMapper("1", "0");
@@ -60,15 +60,13 @@ test("typedDyckWordToNonnegativeMapper", () => {
   expect(dyckOneMapper(""          )).toEqual(0);
   expect(dyckOneMapper("10"        )).toEqual(1);
   expect(dyckOneMapper("1100"      )).toEqual(2);
-  expect(dyckOneMapper("111000"    )).toEqual(9);
-
   expect(dyckOneMapper("110010"    )).toEqual(3);
   expect(dyckOneMapper("1010"      )).toEqual(4);
-
   expect(dyckOneMapper("101100"    )).toEqual(5);
   expect(dyckOneMapper("11001100"  )).toEqual(6);
   expect(dyckOneMapper("1110001100")).toEqual(7);
   expect(dyckOneMapper("11100010"  )).toEqual(8);
+  expect(dyckOneMapper("111000"    )).toEqual(9);
 
   const dyckThreeMapper = typedDyckWordToNonnegativeMapper("(", ")", "[", "]", "{", "}");
 
