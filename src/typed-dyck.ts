@@ -21,7 +21,7 @@ function pairsOf(alphabet: Alphabet) {
   return (layer: number): [string, string] => alphabet.slice(layer * 2, (layer * 2) + 2) as [string, string];
 }
 
-export function closingSymbolsOf(...alphabet: Alphabet) {
+function closingSymbolsOf(...alphabet: Alphabet) {
 
   if (!isAlphabet(alphabet)) throw new RangeError();
 

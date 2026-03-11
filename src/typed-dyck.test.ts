@@ -105,10 +105,3 @@ test("typedDyckWordRecognizer", () => {
   expect(r("[()][")).toBe(false);
   expect(r("][")).toBe(false);
 });
-
-test("closingSymbolsOf", () => {
-  expect(closingSymbolsOf('1', '0', '(', ')').get("0")).toBeUndefined();
-  expect(closingSymbolsOf('1', '0', '(', ')').get("1")).toEqual("0");
-  expect(closingSymbolsOf('1', '0', '(', ')').get(")")).toBeUndefined();
-  expect(closingSymbolsOf('1', '0', '(', ')').get("(")).toEqual(")");
-});
