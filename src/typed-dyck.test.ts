@@ -55,6 +55,8 @@ test("typed words, normal case", () => {
 });
 
 test("typedDyckWordToNonnegativeMapper", () => {
+  // Dyck-1
+
   const dyckOneMapper = typedDyckWordToNonnegativeMapper("1", "0");
 
   expect(dyckOneMapper(""          )).toEqual(0);
@@ -67,6 +69,14 @@ test("typedDyckWordToNonnegativeMapper", () => {
   expect(dyckOneMapper("1110001100")).toEqual(7);
   expect(dyckOneMapper("11100010"  )).toEqual(8);
   expect(dyckOneMapper("111000"    )).toEqual(9);
+
+  // invalid strings should throw exceptions
+
+  expect(() => dyckOneMapper("0")).toThrow(RangeError);
+  expect(() => dyckOneMapper("1")).toThrow(RangeError);
+  expect(() => dyckOneMapper("01")).toThrow(RangeError);
+
+  // Dyck 3
 
   const dyckThreeMapper = typedDyckWordToNonnegativeMapper("(", ")", "[", "]", "{", "}");
 
@@ -89,6 +99,8 @@ test("typedDyckWordToNonnegativeMapper", () => {
   expect(dyckThreeMapper("(())[]")).toEqual(16);
   expect(dyckThreeMapper("[()][]")).toEqual(17);
   expect(dyckThreeMapper("{()}[]")).toEqual(18);
+
+  // invalid strings should throw exceptions
 
   expect(() => dyckThreeMapper("{()}[")).toThrow(RangeError);
   expect(() => dyckThreeMapper("][")).toThrow(RangeError);

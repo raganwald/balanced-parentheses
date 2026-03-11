@@ -71,7 +71,7 @@ export function nonnegativeToTypedDyckWordMapper(...alphabet: Alphabet) {
 }
 
 /**
- * Given an Alphabet, generates all the finite words in that alphabet in finite fime.
+ * Given an Alphabet, generates all the finite Dyck words with that alphabet, in finite fime.
  * 
  * @param alphabet The alphabet of this Dyck language, spread across the parameters,
  *                 e.g. typedDickWords("(", ")", "[", "]", "{", "}")
@@ -94,7 +94,7 @@ export function * typedDyckWords(...alphabet: Alphabet) {
  * the order in which typedDyckWords will yield the supplied word.
  * 
  * @param alphabet 
- * @returns undefined if it is not a word in the language, or its order.
+ * @returns A nonnegative order, or throws RangeError is not a valid Dyck Word
  */
 export function typedDyckWordToNonnegativeMapper(...alphabet: Alphabet) {
 
@@ -106,7 +106,6 @@ export function typedDyckWordToNonnegativeMapper(...alphabet: Alphabet) {
   const closingSymbolFor = (symbol: string) => closingSymbolDictionary.get(symbol);
   const notOpeningSymbol = (symbol: string) => closingSymbolFor(symbol) === undefined;
   const layerOf = (openingSymbol: string) => alphabet.indexOf(openingSymbol) / 2;
-  const inAlphabet = (symbol: string) => alphabet.indexOf(symbol) >= 0;
 
   return function mapperWrapper(word: string): MaybeNumber {
     const isEmpty = (cursor: number) => word[cursor] === undefined;
@@ -120,15 +119,18 @@ export function typedDyckWordToNonnegativeMapper(...alphabet: Alphabet) {
 
     /**
      * 
-     * e.g. (()())()
+     * e.g. (()())() looks like this:
+     * 
      *      ( xCursor, xSymbol, xlayer derived
      *      ( \
-     *      ) | - recursively parsed
+     *      ) | - recursively parsed row word
      *      ( |
      *      ) /
      *      ) yCursor, ySymbol
-     *      (
-     *      )
+     *      ( \
+     *          - recursively parsed column word
+     *      ) /
+     *      ?   - nextCursor
      * 
      * @param xCursor the location of a word to match
      * @returns the nonnegative that mps to and is mapped from this word
