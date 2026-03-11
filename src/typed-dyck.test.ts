@@ -1,20 +1,20 @@
 import { take } from "./base";
-import { nonnegativeToTypedDyckWordMapper, typedDyckWords } from "./typed-dyck";
+import { closingSymbolsOf, nonnegativeToTypedDyckWordMapper, typedDyckWordRecognizer, typedDyckWords, typedDyckWordToNonnegativeMapper } from "./typed-dyck";
 
 test("nonnegativeToTypedDyckWordMapper", () => {
-  const binaryLanguage = nonnegativeToTypedDyckWordMapper("1", "0");
+  const mapper = nonnegativeToTypedDyckWordMapper("1", "0");
 
-  expect(binaryLanguage(0)).toEqual("");
-  expect(binaryLanguage(1)).toEqual("10");
-  expect(binaryLanguage(2)).toEqual("1100");
-  expect(binaryLanguage(3)).toEqual("110010");
-  expect(binaryLanguage(4)).toEqual("1010");
+  expect(mapper(0)).toEqual("");
+  expect(mapper(1)).toEqual("10");
+  expect(mapper(2)).toEqual("1100");
+  expect(mapper(3)).toEqual("110010");
+  expect(mapper(4)).toEqual("1010");
 
-  expect(binaryLanguage(5)).toEqual("101100");
-  expect(binaryLanguage(6)).toEqual("11001100");
-  expect(binaryLanguage(7)).toEqual("1110001100");
-  expect(binaryLanguage(8)).toEqual("11100010");
-  expect(binaryLanguage(9)).toEqual("111000");
+  expect(mapper(5)).toEqual("101100");
+  expect(mapper(6)).toEqual("11001100");
+  expect(mapper(7)).toEqual("1110001100");
+  expect(mapper(8)).toEqual("11100010");
+  expect(mapper(9)).toEqual("111000");
 });
 
 /**
@@ -52,4 +52,63 @@ test("typed words, normal case", () => {
     "()[]", "[][]", "{}[]",
     "(())[]", "[()][]", "{()}[]"
   ]);
+});
+
+test("typedDyckWordToNonnegativeMapper", () => {
+  const dyckOneMapper = typedDyckWordToNonnegativeMapper("1", "0");
+
+  expect(dyckOneMapper(""          )).toEqual(0);
+  expect(dyckOneMapper("10"        )).toEqual(1);
+  expect(dyckOneMapper("1100"      )).toEqual(2);
+  expect(dyckOneMapper("111000"    )).toEqual(9);
+
+  expect(dyckOneMapper("110010"    )).toEqual(3);
+  expect(dyckOneMapper("1010"      )).toEqual(4);
+
+  expect(dyckOneMapper("101100"    )).toEqual(5);
+  expect(dyckOneMapper("11001100"  )).toEqual(6);
+  expect(dyckOneMapper("1110001100")).toEqual(7);
+  expect(dyckOneMapper("11100010"  )).toEqual(8);
+
+  const dyckThreeMapper = typedDyckWordToNonnegativeMapper("(", ")", "[", "]", "{", "}");
+
+  expect(dyckThreeMapper("")).toEqual(0);
+  expect(dyckThreeMapper("()")).toEqual(1);
+  expect(dyckThreeMapper("[]")).toEqual(2);
+  expect(dyckThreeMapper("{}")).toEqual(3);
+  expect(dyckThreeMapper("(())")).toEqual(4);
+  expect(dyckThreeMapper("[()]")).toEqual(5);
+  expect(dyckThreeMapper("{()}")).toEqual(6);
+  expect(dyckThreeMapper("(())()")).toEqual(7);
+  expect(dyckThreeMapper("[()]()")).toEqual(8);
+  expect(dyckThreeMapper("{()}()")).toEqual(9);
+  expect(dyckThreeMapper("()()")).toEqual(10);
+  expect(dyckThreeMapper("[]()")).toEqual(11);
+  expect(dyckThreeMapper("{}()")).toEqual(12);
+  expect(dyckThreeMapper("()[]")).toEqual(13);
+  expect(dyckThreeMapper("[][]")).toEqual(14);
+  expect(dyckThreeMapper("{}[]")).toEqual(15);
+  expect(dyckThreeMapper("(())[]")).toEqual(16);
+  expect(dyckThreeMapper("[()][]")).toEqual(17);
+  expect(dyckThreeMapper("{()}[]")).toEqual(18);
+
+  expect(() => dyckThreeMapper("{()}[")).toThrow(RangeError);
+  expect(() => dyckThreeMapper("][")).toThrow(RangeError);
+  expect(() => dyckThreeMapper("[()][")).toThrow(RangeError);
+});
+
+test("typedDyckWordRecognizer", () => {
+  const r = typedDyckWordRecognizer("(", ")", "[", "]", "{", "}");
+  
+  expect(r("")).toBe(true);
+  expect(r("[()][]")).toBe(true);
+  expect(r("[()][")).toBe(false);
+  expect(r("][")).toBe(false);
+});
+
+test("closingSymbolsOf", () => {
+  expect(closingSymbolsOf('1', '0', '(', ')').get("0")).toBeUndefined();
+  expect(closingSymbolsOf('1', '0', '(', ')').get("1")).toEqual("0");
+  expect(closingSymbolsOf('1', '0', '(', ')').get(")")).toBeUndefined();
+  expect(closingSymbolsOf('1', '0', '(', ')').get("(")).toEqual(")");
 });

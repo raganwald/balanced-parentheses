@@ -1,3 +1,5 @@
+export const Identity = <T>(x: T) => x;
+
 export const Zero = 0;
 export const One = 1;
 
@@ -52,3 +54,10 @@ export const isAlphabet = (alphabet: Alphabet): alphabet is Alphabet =>
   (alphabet.length % 2 === 0) &&
   alphabet.every(({ length }) => length === 1) &&
   alphabet.length === (new Set(alphabet)).size;
+
+export const zeroUpTo = (n: number) =>
+  n < 0
+    ? []
+    : (new Array(n + 1))
+      .fill(undefined)
+      .map((_, i) => i);

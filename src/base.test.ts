@@ -1,4 +1,4 @@
-import { isAlphabet, isNonnegativePair, take } from "./base";
+import { isAlphabet, isNonnegativePair, take, zeroUpTo } from "./base";
 
 const elementsOf = <T>(array: T[]) =>
   function * () { yield * array; }()
@@ -42,4 +42,10 @@ test("isNonnegativePair", () => {
   expect(isNonnegativePair([3, 0])).toBe(true);
   expect(isNonnegativePair([0, 0])).toBe(true);
   expect(isNonnegativePair([0, 3])).toBe(true);
+});
+
+test("upTo", () => {
+  expect(zeroUpTo(-1)).toEqual([]);
+  expect(zeroUpTo(0)).toEqual([0]);
+  expect(zeroUpTo(6)).toEqual([0, 1, 2, 3, 4, 5, 6]);
 });
