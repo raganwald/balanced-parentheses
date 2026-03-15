@@ -1,4 +1,5 @@
-import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTriplet, One, Zero } from "../base";
+import { isNonnegativePair, NonnegativePair, One, Zero } from "../base";
+import { PairOf, PositiveOf, Strategy } from "./types";
 
 /**
  *
@@ -22,7 +23,7 @@ import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTr
  * @returns a tuple of nonnegative integers, [row, column]
  *
  */
-export function mapPositiveToNonnegativePair(positive: number): NonnegativePair {
+export const pairOf: PairOf = (positive) => {
   // erroneous inputs
   if (positive < One) throw new RangeError();
   if (positive != Math.floor(positive)) throw new RangeError();
@@ -123,7 +124,7 @@ export function mapPositiveToNonnegativePair(positive: number): NonnegativePair 
   return [row, column];
 }
 
-export function mapNonegativePairToPositive([row, column]: NonnegativePair): number {
+export const positiveOf: PositiveOf = ([row, column]) => {
   if (!isNonnegativePair([row, column])) throw new RangeError();
 
   // base case
@@ -160,57 +161,4 @@ function isDownAndThenLeft(rowOrColumnIndex: number) {
   return rowOrColumnIndex % 2 === 1;
 }
 
-/**
- *
- * The function mapPositiveToNonnegativePair above maps the positive integers (1..∞) to
- * tuples of nonnegative integers (0..∞, 0..∞) by diagonalizing them on
- * a grid like this:
- *
- *      |  0 |  1 |  2 |  3 |  …
- *      |----|----|----|----|---
- * |  0 |  1 |  4 |  5 | 16 | 17
- * |  1 |  2 |  3 |  6 | 15 | 18
- * |  2 |  9 |  8 |  7 | 14 | 19
- * |  3 | 10 | 11 | 12 | 13 | 20
- * |  … | 25 | 24 | 23 | 22 | 21…
- *
- * Each cell represents a pair marked by the row and column indices.
- *
- * Here we add a third, `layer` index to handle a finite range of numbers from `0` to
- * `numberOfLayers - 1`, which creates a 3d path out of the 2d path.
- *
- * @param positive a positive integer
- * @param numberOfLayers the total number of layers
- * @returns a triple of nonnegative integers, two of which are any finite integer,
- *          and the third of which is in a fixed range of 0..numberOfTypes-1
- *          and where numberOfTypes >= 1.
- *
- */
-export function mapPositiveToNonnegativeTriplet(numberOfLayers: number) {
-  if (numberOfLayers < One) throw new RangeError();
-  if (numberOfLayers != Math.floor(numberOfLayers)) throw new RangeError();
-
-  return function mapper(positive: number): NonnegativeTriplet {
-    // erroneous inputs
-    if (positive < One) throw new RangeError();
-    if (positive != Math.floor(positive)) throw new RangeError();
-
-    const positiveZeroBased = positive - 1;
-    const positive2d = Math.floor(positiveZeroBased / numberOfLayers) + 1;
-    const layer = positiveZeroBased % numberOfLayers;
-
-    const [row, column]: NonnegativePair = mapPositiveToNonnegativePair(positive2d);
-
-    return [row, column, layer];
-  };
-}
-
-export function mapNonnegativeTripletToPositive([row, column, layer]: NonnegativeTriplet, numberOfLayers: number): number {
-  if (!isNonnegativeTriplet([row, column, layer], numberOfLayers)) throw new RangeError();
-  
-  const positive2d = mapNonegativePairToPositive([row, column]);
-
-  // layer is zero-based, positive2d is 1-based, need to do a shake of the hips to
-  // sort out the proper modulo artithmetic
-  return ((positive2d - 1) * numberOfLayers) + 1 + layer;
-}
+export const strategy = { pairOf, positiveOf };

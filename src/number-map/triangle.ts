@@ -39,7 +39,7 @@ export const smallestTermStartingFrom = (positive: number) => Math.ceil((Math.sq
  * @returns a tuple of nonnegative integers, [row, column]
  *
  */
-export function mapPositiveToNonnegativePair(positive: number): NonnegativePair {
+export function pairOf(positive: number): NonnegativePair {
   // erroneous inputs
   if (positive < One) throw new RangeError();
   if (positive != Math.floor(positive)) throw new RangeError();
@@ -57,9 +57,11 @@ export function mapPositiveToNonnegativePair(positive: number): NonnegativePair 
   return [row, column];
 }
 
-export function mapNonegativePairToPositive([row, column]: NonnegativePair): number {
+export function positiveOf([row, column]: NonnegativePair): number {
   const lengthOfDiagonal = row + column + 1;
   const positive = triangleNumberFor(lengthOfDiagonal) - row;
 
   return positive;
 }
+
+export const strategy = { pairOf, positiveOf };

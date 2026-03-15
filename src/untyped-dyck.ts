@@ -6,7 +6,7 @@
  *
  */
 import { Zero } from "./base";
-import { mapPositiveToNonnegativePair } from "./number-map/square";
+import { pairOf } from "./number-map/square";
 
 /**
  * 
@@ -49,7 +49,7 @@ export function nonnegativeToUntypedDyckWordMapper(X: string, Y: string) {
     if (nonnegative === 0) return '';
 
     // recursive case
-    const [row, column] = mapPositiveToNonnegativePair(nonnegative);
+    const [row, column] = pairOf(nonnegative);
 
     return `${X}${mapper(row)}${Y}${mapper(column)}`;
   };

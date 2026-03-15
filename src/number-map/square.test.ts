@@ -1,5 +1,4 @@
-import { mapNonegativePairToPositive, mapPositiveToNonnegativePair } from "./square";
-import { mapPositiveToNonnegativeTriplet, mapNonnegativeTripletToPositive } from "./square";
+import { positiveOf, pairOf } from "./square";
 
 /*
  * 
@@ -17,7 +16,7 @@ test("mapPositiveToNonnegativePair: path", () => {
   ];
 
   for (let i = 1; i <= 25; i++) {
-    const [row, column] = mapPositiveToNonnegativePair(i);
+    const [row, column] = pairOf(i);
 
     (pathIn2d[row] || [])[column] = i;
   }
@@ -32,90 +31,27 @@ test("mapPositiveToNonnegativePair: path", () => {
 });
 
 test("mapPositiveToNonnegativePair", () => {
-  expect(mapPositiveToNonnegativePair(1)).toEqual([0, 0]); // [row, column]
-  expect(mapPositiveToNonnegativePair(2)).toEqual([1, 0]);
-  expect(mapPositiveToNonnegativePair(3)).toEqual([1, 1]);
-  expect(mapPositiveToNonnegativePair(4)).toEqual([0, 1]);
+  expect(pairOf(1)).toEqual([0, 0]); // [row, column]
+  expect(pairOf(2)).toEqual([1, 0]);
+  expect(pairOf(3)).toEqual([1, 1]);
+  expect(pairOf(4)).toEqual([0, 1]);
 
-  expect(mapPositiveToNonnegativePair(5)).toEqual([0, 2]);
-  expect(mapPositiveToNonnegativePair(6)).toEqual([1, 2]);
-  expect(mapPositiveToNonnegativePair(7)).toEqual([2, 2]);
-  expect(mapPositiveToNonnegativePair(8)).toEqual([2, 1]);
-  expect(mapPositiveToNonnegativePair(9)).toEqual([2, 0]);
+  expect(pairOf(5)).toEqual([0, 2]);
+  expect(pairOf(6)).toEqual([1, 2]);
+  expect(pairOf(7)).toEqual([2, 2]);
+  expect(pairOf(8)).toEqual([2, 1]);
+  expect(pairOf(9)).toEqual([2, 0]);
 });
 
 test("mapNonegativePairToPositive", () => {
-  expect(mapNonegativePairToPositive([0, 0])).toEqual(1); // [row, column]
-  expect(mapNonegativePairToPositive([1, 0])).toEqual(2);
-  expect(mapNonegativePairToPositive([1, 1])).toEqual(3);
-  expect(mapNonegativePairToPositive([0, 1])).toEqual(4);
+  expect(positiveOf([0, 0])).toEqual(1); // [row, column]
+  expect(positiveOf([1, 0])).toEqual(2);
+  expect(positiveOf([1, 1])).toEqual(3);
+  expect(positiveOf([0, 1])).toEqual(4);
 
-  expect(mapNonegativePairToPositive([0, 2])).toEqual(5);
-  expect(mapNonegativePairToPositive([1, 2])).toEqual(6);
-  expect(mapNonegativePairToPositive([2, 2])).toEqual(7);
-  expect(mapNonegativePairToPositive([2, 1])).toEqual(8);
-  expect(mapNonegativePairToPositive([2, 0])).toEqual(9);
-});
-
-test("round trip mapPositiveToNonnegativePair -> mapNonegativePairToPositive", () => {
-  let notNegative = 0;
-
-  while (++notNegative < 100) {
-    const pair = mapPositiveToNonnegativePair(notNegative);
-    const notNegativePrime = mapNonegativePairToPositive(pair);
-
-    expect(notNegativePrime).toBe(notNegative);
-  }
-});
-
-test("mapPositiveToNonnegativeTriplet", () => {
-  const threeLayerMapper = mapPositiveToNonnegativeTriplet(3);
-  
-  expect(threeLayerMapper( 1)).toEqual([0, 0, 0]);
-  expect(threeLayerMapper( 2)).toEqual([0, 0, 1]);
-  expect(threeLayerMapper( 3)).toEqual([0, 0, 2]);
- 
-  expect(threeLayerMapper( 4)).toEqual([1, 0, 0]);
-  expect(threeLayerMapper( 5)).toEqual([1, 0, 1]);
-  expect(threeLayerMapper( 6)).toEqual([1, 0, 2]);
- 
-  expect(threeLayerMapper( 7)).toEqual([1, 1, 0]);
-  expect(threeLayerMapper( 8)).toEqual([1, 1, 1]);
-  expect(threeLayerMapper( 9)).toEqual([1, 1, 2]);
-
-  expect(threeLayerMapper(10)).toEqual([0, 1, 0]);
-  expect(threeLayerMapper(11)).toEqual([0, 1, 1]);
-  expect(threeLayerMapper(12)).toEqual([0, 1, 2]);
-
-  const oneLayerMapper = mapPositiveToNonnegativeTriplet(1);
-
-  expect(oneLayerMapper(1)).toEqual([0, 0, 0]);
-  expect(oneLayerMapper(2)).toEqual([1, 0, 0]);
-  expect(oneLayerMapper(3)).toEqual([1, 1, 0]);
-  expect(oneLayerMapper(4)).toEqual([0, 1, 0]);
-});
-
-test("mapNonnegativeTripletToPositive", () => {
-  // normal case
-  expect(mapNonnegativeTripletToPositive([0, 0, 0], 3)).toEqual(1);
-  expect(mapNonnegativeTripletToPositive([0, 0, 1], 3)).toEqual(2);
-  expect(mapNonnegativeTripletToPositive([0, 0, 2], 3)).toEqual(3);
-
-  expect(mapNonnegativeTripletToPositive([1, 0, 0], 3)).toEqual(4);
-  expect(mapNonnegativeTripletToPositive([1, 0, 1], 3)).toEqual(5);
-  expect(mapNonnegativeTripletToPositive([1, 0, 2], 3)).toEqual(6);
-
-  expect(mapNonnegativeTripletToPositive([1, 1, 0], 3)).toEqual(7);
-  expect(mapNonnegativeTripletToPositive([1, 1, 1], 3)).toEqual(8);
-  expect(mapNonnegativeTripletToPositive([1, 1, 2], 3)).toEqual(9);
-
-  expect(mapNonnegativeTripletToPositive([0, 1, 0], 3)).toEqual(10);
-  expect(mapNonnegativeTripletToPositive([0, 1, 1], 3)).toEqual(11);
-  expect(mapNonnegativeTripletToPositive([0, 1, 2], 3)).toEqual(12);
-
-  // degenerate case
-  expect(mapNonnegativeTripletToPositive([0, 0, 0], 1)).toEqual(1);
-  expect(mapNonnegativeTripletToPositive([1, 0, 0], 1)).toEqual(2);
-  expect(mapNonnegativeTripletToPositive([1, 1, 0], 1)).toEqual(3);
-  expect(mapNonnegativeTripletToPositive([0, 1, 0], 1)).toEqual(4);
+  expect(positiveOf([0, 2])).toEqual(5);
+  expect(positiveOf([1, 2])).toEqual(6);
+  expect(positiveOf([2, 2])).toEqual(7);
+  expect(positiveOf([2, 1])).toEqual(8);
+  expect(positiveOf([2, 0])).toEqual(9);
 });

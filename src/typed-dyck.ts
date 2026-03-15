@@ -10,7 +10,9 @@
  */
 
 import { Alphabet, Identity, isAlphabet, Zero, zeroUpTo } from "./base";
-import { mapNonnegativeTripletToPositive, mapPositiveToNonnegativeTriplet } from "./number-map/square";
+import { positiveOf, pairOf } from "./number-map/square";
+import { positiveOfTriplet } from "./number-map/layers";
+import { tripletOf } from "./number-map/layers";
 
 type MaybeNumber = number | undefined;
 type NonnegativeWithCursor = [nonnegative: number, cursor: number];
@@ -59,7 +61,7 @@ export function nonnegativeToTypedDyckWordMapper(...alphabet: Alphabet) {
     if (nonnegative === 0) return '';
 
     // recursive case
-    const [row, column, layer] = mapPositiveToNonnegativeTriplet(numberOfTypes)(nonnegative);
+    const [row, column, layer] = tripletOf(pairOf, numberOfTypes)(nonnegative);
 
     const [X, Y] = pairFor(layer);
 
@@ -167,7 +169,7 @@ export function typedDyckWordToNonnegativeMapper(...alphabet: Alphabet) {
           ? [Zero, columnCursor]
           : mapper(columnCursor);
 
-      const compoundNonnegative = mapNonnegativeTripletToPositive([rowNonNegative, columnNonNegative, xyLayer], numberOfLayers);
+      const compoundNonnegative = positiveOfTriplet(positiveOf, numberOfLayers)([rowNonNegative, columnNonNegative, xyLayer]);
 
       return [compoundNonnegative, nextCursor];
     }
