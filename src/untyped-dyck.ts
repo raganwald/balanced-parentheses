@@ -6,7 +6,7 @@
  *
  */
 import { Zero } from "./base";
-import { mapPositiveToNonnegativePair } from "./number.maps";
+import { mapPositiveToNonnegativePair } from "./number-map/square";
 
 /**
  * 

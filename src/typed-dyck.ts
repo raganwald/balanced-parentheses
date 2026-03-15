@@ -10,7 +10,7 @@
  */
 
 import { Alphabet, Identity, isAlphabet, Zero, zeroUpTo } from "./base";
-import { mapNonnegativeTripletToPositive, mapPositiveToNonnegativeTriplet } from "./number.maps";
+import { mapNonnegativeTripletToPositive, mapPositiveToNonnegativeTriplet } from "./number-map/square";
 
 type MaybeNumber = number | undefined;
 type NonnegativeWithCursor = [nonnegative: number, cursor: number];

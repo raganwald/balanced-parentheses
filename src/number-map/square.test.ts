@@ -1,6 +1,5 @@
-import { NonnegativeTriplet } from "./base";
-import { mapNonegativePairToPositive, mapPositiveToNonnegativePair } from "./number.maps";
-import { mapPositiveToNonnegativeTriplet, mapNonnegativeTripletToPositive } from "./number.maps";
+import { mapNonegativePairToPositive, mapPositiveToNonnegativePair } from "./square";
+import { mapPositiveToNonnegativeTriplet, mapNonnegativeTripletToPositive } from "./square";
 
 /*
  * 

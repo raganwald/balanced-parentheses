@@ -1,4 +1,4 @@
-import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTriplet, One, Zero } from "./base";
+import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTriplet, One, Zero } from "../base";
 
 /**
  *
@@ -22,7 +22,6 @@ import { isNonnegativePair, isNonnegativeTriplet, NonnegativePair, NonnegativeTr
  * @returns a tuple of nonnegative integers, [row, column]
  *
  */
-
 export function mapPositiveToNonnegativePair(positive: number): NonnegativePair {
   // erroneous inputs
   if (positive < One) throw new RangeError();
