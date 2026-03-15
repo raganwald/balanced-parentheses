@@ -186,21 +186,23 @@ function isDownAndThenLeft(rowOrColumnIndex: number) {
  *          and where numberOfTypes >= 1.
  *
  */
-export function mapPositiveToNonnegativeTriplet(positive: number, numberOfLayers: number): NonnegativeTriplet {
-
-  // erroneous inputs
-  if (positive < One) throw new RangeError();
+export function mapPositiveToNonnegativeTriplet(numberOfLayers: number) {
   if (numberOfLayers < One) throw new RangeError();
-  if (positive != Math.floor(positive)) throw new RangeError();
   if (numberOfLayers != Math.floor(numberOfLayers)) throw new RangeError();
 
-  const positiveZeroBased = positive - 1;
-  const positive2d = Math.floor(positiveZeroBased / numberOfLayers) + 1;
-  const layer = positiveZeroBased % numberOfLayers;
+  return function mapper(positive: number): NonnegativeTriplet {
+    // erroneous inputs
+    if (positive < One) throw new RangeError();
+    if (positive != Math.floor(positive)) throw new RangeError();
 
-  const [row, column]: NonnegativePair = mapPositiveToNonnegativePair(positive2d);
+    const positiveZeroBased = positive - 1;
+    const positive2d = Math.floor(positiveZeroBased / numberOfLayers) + 1;
+    const layer = positiveZeroBased % numberOfLayers;
 
-  return [row, column, layer];
+    const [row, column]: NonnegativePair = mapPositiveToNonnegativePair(positive2d);
+
+    return [row, column, layer];
+  };
 }
 
 export function mapNonnegativeTripletToPositive([row, column, layer]: NonnegativeTriplet, numberOfLayers: number): number {

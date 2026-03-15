@@ -59,7 +59,7 @@ export function nonnegativeToTypedDyckWordMapper(...alphabet: Alphabet) {
     if (nonnegative === 0) return '';
 
     // recursive case
-    const [row, column, layer] = mapPositiveToNonnegativeTriplet(nonnegative, numberOfTypes);
+    const [row, column, layer] = mapPositiveToNonnegativeTriplet(numberOfTypes)(nonnegative);
 
     const [X, Y] = pairFor(layer);
 

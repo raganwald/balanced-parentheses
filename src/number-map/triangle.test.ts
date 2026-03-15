@@ -1,4 +1,4 @@
-import { triangleNumberFor, smallestTermStartingFrom, mapPositiveToNonnegativePair } from "./triangle";
+import { triangleNumberFor, smallestTermStartingFrom, mapPositiveToNonnegativePair, mapNonegativePairToPositive } from "./triangle";
 
 test("nthTriangleNumber", () => {
   expect(triangleNumberFor( 0)).toEqual(0);
@@ -68,4 +68,22 @@ test("mapPositiveToNonnegativePair", () => {
   expect(mapPositiveToNonnegativePair(13)).toEqual([2, 2]);
   expect(mapPositiveToNonnegativePair(14)).toEqual([1, 3]);
   expect(mapPositiveToNonnegativePair(15)).toEqual([0, 4]);
+});
+
+test("mapNonegativePairToPositive", () => {
+  expect(mapNonegativePairToPositive([0, 0])).toEqual( 1);
+  expect(mapNonegativePairToPositive([1, 0])).toEqual( 2);
+  expect(mapNonegativePairToPositive([0, 1])).toEqual( 3);
+  expect(mapNonegativePairToPositive([2, 0])).toEqual( 4);
+  expect(mapNonegativePairToPositive([1, 1])).toEqual( 5);
+  expect(mapNonegativePairToPositive([0, 2])).toEqual( 6);
+  expect(mapNonegativePairToPositive([3, 0])).toEqual( 7);
+  expect(mapNonegativePairToPositive([2, 1])).toEqual( 8);
+  expect(mapNonegativePairToPositive([1, 2])).toEqual( 9);
+  expect(mapNonegativePairToPositive([0, 3])).toEqual(10);
+  expect(mapNonegativePairToPositive([4, 0])).toEqual(11);
+  expect(mapNonegativePairToPositive([3, 1])).toEqual(12);
+  expect(mapNonegativePairToPositive([2, 2])).toEqual(13);
+  expect(mapNonegativePairToPositive([1, 3])).toEqual(14);
+  expect(mapNonegativePairToPositive([0, 4])).toEqual(15);
 });

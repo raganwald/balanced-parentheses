@@ -56,3 +56,10 @@ export function mapPositiveToNonnegativePair(positive: number): NonnegativePair 
 
   return [row, column];
 }
+
+export function mapNonegativePairToPositive([row, column]: NonnegativePair): number {
+  const lengthOfDiagonal = row + column + 1;
+  const positive = triangleNumberFor(lengthOfDiagonal) - row;
+
+  return positive;
+}
