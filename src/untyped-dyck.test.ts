@@ -1,8 +1,9 @@
 import { take } from "./base";
-import { untypedDyckWords, nonnegativeToUntypedDyckWordMapper } from "./untyped-dyck";
+import { pairOf } from "./number-map/square";
+import { untypedDyckWords, untypedDyckWordOf } from "./untyped-dyck";
 
 test("nonnegativeToUntypedDyckWordMapper", () => {
-  const binaryLanguage = nonnegativeToUntypedDyckWordMapper("1", "0");
+  const binaryLanguage = untypedDyckWordOf(pairOf, "1", "0");
 
   expect(binaryLanguage(0)).toEqual("");
   expect(binaryLanguage(1)).toEqual("10");
@@ -18,7 +19,7 @@ test("nonnegativeToUntypedDyckWordMapper", () => {
 });
 
 test("untypedDyckWords", () => {
-  expect([...take(25, untypedDyckWords('(', ')'))]).toEqual([
+  expect([...take(25, untypedDyckWords(pairOf, '(', ')'))]).toEqual([
     "", "()", "(())", "(())()", "()()",
     "()(())", "(())(())", "((()))(())", "((()))()", "((()))",
     "((())())", "((())())()", "((())())(())", "((())())(())()", "((()))(())()",

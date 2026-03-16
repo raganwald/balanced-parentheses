@@ -6,7 +6,7 @@
  *
  */
 import { Zero } from "./base";
-import { pairOf } from "./number-map/square";
+import { PairOf } from "./number-map/types";
 
 /**
  * 
@@ -39,7 +39,7 @@ import { pairOf } from "./number-map/square";
  * @param nonnegative a positive or counting number 
  * @returns a string
  */
-export function nonnegativeToUntypedDyckWordMapper(X: string, Y: string) {
+export function untypedDyckWordOf(pairOf: PairOf, X: string, Y: string) {
   return function mapper (nonnegative: number): string {
     // erroneous inputs
     if (nonnegative < Zero) throw new RangeError();
@@ -55,8 +55,8 @@ export function nonnegativeToUntypedDyckWordMapper(X: string, Y: string) {
   };
 }
 
-export function * untypedDyckWords(X: string, Y: string) {
-  const mapper = nonnegativeToUntypedDyckWordMapper(X, Y);
+export function * untypedDyckWords(pairOf: PairOf, X: string, Y: string) {
+  const mapper = untypedDyckWordOf(pairOf, X, Y);
 
   let n = 0;
 
